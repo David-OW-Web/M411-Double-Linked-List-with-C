@@ -14,11 +14,11 @@ typedef struct Product {
 // Funktionsdefinitionen
 Product* createList(int AnzahlElemente);
 
-Product* deleteAll(Product *pHead);
+Product* deleteAll(Product* pHead);
 
 Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung);
 
-void printList(Product *Node, int AnzahlElemente);
+void printList(Product* Node, int AnzahlElemente);
 
 char getRandUpperCaseChar();
 
@@ -26,78 +26,6 @@ int getRandomNumber();
 
 
 void main() {
-	/*
-	int menu;
-
-	printf("0: Beenden | 1: Text ausgeben");
-
-	scanf_s("%i", &menu);
-
-	if (menu > 5) { printf("Bitte Option wählen. Nur 1-5"); scanf_s("%i", &menu); }
-	int programmende = 0;
-	do {
-		switch (menu) {
-		case 1:
-			printf("Hello World");
-			break;
-		case 0:
-			programmende = 1;
-			break;
-		case 2:
-			printf("Zweiter case");
-			break;
-		default:
-			printf("Standard case");
-		}
-	} while (programmende != 0);
-	*/
-	/*while (true) {
-		int menu;
-		struProduct* Node = NULL;
-		printf("Wählen Sie eine Option aus. 0) Beenden | 1) Liste erstellen | 2 Liste ausgeben");
-		scanf_s("%i", &menu);
-		if (menu == 1) {
-			int Anzahl;
-			printf("Bitte Anzahl Elemente für in Liste eingeben");
-			scanf_s("%i", &Anzahl);
-			Node = createList(Anzahl);
-		}
-		if (menu == 2) {
-			struProduct* pTemp = Node;
-			while (pTemp->pNext != Node) {
-				printf("%f", pTemp->Gewicht);
-				printf("\n");
-				pTemp = pTemp->pNext;
-			}
-		}
-	}
-	/*
-	struProduct* Node = createList(5);
-	int selection;
-	scanf_s("%i", &selection);
-	if (selection == 1) {
-		deleteAll(Node);
-		printf("Deleted");
-	}
-	struProduct* pTemp = Node;
-	while (pTemp->pNext != Node) {
-		printf("%f", pTemp->Gewicht);
-		printf("\n");
-		pTemp = pTemp->pNext;
-	}
-	printf("%f", pTemp->Gewicht);
-	printf("\n");
-	*/
-	/*
-	struProduct* Node = createList(1);
-	printf(Node->Bez);
-	int del;
-	scanf_s("%i", &del);
-	if (del == 1) {
-		deleteAll(Node, Node);
-		printf("Deleted");
-	}
-	*/
 	int menu;
 	struProduct* Node = NULL;
 	do {
@@ -137,15 +65,6 @@ void main() {
 			system("cls");
 			break;
 		case 4:
-			/*
-			if (Node == NULL) {
-				printf("Keine Liste existiert");
-			}
-			else {
-				printf("Liste existiert");
-			}
-			strcmp("David", "Peric");
-			*/
 			printf("Bezeichnung von Element eingeben: \t");
 			char Bezeichnung[40]; scanf_s("%s", Bezeichnung, sizeof(Bezeichnung)); // gets_s(Bezeichnung); // scanf("%s", &Bezeichnung);
 			deleteElement(Node, Node, Bezeichnung);
@@ -163,20 +82,14 @@ void main() {
 			printf("\n");
 		}
 	} while (menu != 0);
-	
-	/*printf("Anzahl Elemente: \t");
-	int Anzahl; scanf_s("%i", &Anzahl);
-	struProduct* Node = createList(Anzahl);
-	printList(Node, 2);
-	*/
-	
-	
+
+
 	system("pause");
 }
 
 // Löschfunktionen
 
-Product* deleteElement(Product *pHead, Product *pDel, char *Bezeichnung) {
+Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung) {
 	struProduct* pTemp = pHead->pPrev;
 	do {
 		if (strcmp(pTemp->Bez, Bezeichnung) == 0) {
@@ -187,21 +100,17 @@ Product* deleteElement(Product *pHead, Product *pDel, char *Bezeichnung) {
 			if (pTemp == pHead) {
 				pHead = aTemp;
 			}
-			/*
-			if (pTemp == pHead) {
-				pHead = aTemp;
-			}
-			*/
 			free(pTemp);
 			pTemp = aTemp;
-		} else {
+		}
+		else {
 			pTemp = pTemp->pNext;
 		}
 	} while (pTemp->pNext != pHead);
 	return NULL;
 }
 
-Product* deleteAll(Product *pHead) {
+Product* deleteAll(Product* pHead) {
 	// tmp entspricht der Node
 	while (pHead->pPrev != pHead) {
 		struProduct* pTemp = pHead->pPrev;
@@ -210,18 +119,7 @@ Product* deleteAll(Product *pHead) {
 	}
 	free(pHead);
 	return NULL;
-	/*
-	if (tmp->pNext == NULL) {
-		pLast = NULL;
-	}
-	else {
-		tmp->pNext->pPrev = NULL;
-	}
-	tmp = tmp->pNext;
-	free(tmp);
-	return tmp;
-	*/
-	
+
 }
 
 // Erstellen der Liste
@@ -243,27 +141,22 @@ Product* createList(int AnzahlElemente) {
 		pLast = pHead->pPrev;
 		// Speicher reservieren
 		pNew = (struProduct*)malloc(sizeof(struProduct));
-			// pHead = pHead->pNext;
+		// pHead = pHead->pNext;
 		pHead->pPrev = pNew;
-			pLast->pNext = pNew;
-			pNew->pPrev = pLast;
-			pNew->pNext = pHead;
-			pNew->Gewicht = getRandomNumber();
-			pNew->Bez[0] = getRandUpperCaseChar();
-			pNew->Bez[1] = '\0';
-			pNew->Preis = getRandomNumber();
-		// return pHead;
+		pLast->pNext = pNew;
+		pNew->pPrev = pLast;
+		pNew->pNext = pHead;
+		pNew->Gewicht = getRandomNumber();
+		pNew->Bez[0] = getRandUpperCaseChar();
+		pNew->Bez[1] = '\0';
+		pNew->Preis = getRandomNumber();
 	}
-	/*while (pHead->pNext != NULL) {
-		pHead = pHead->pNext;
-	}
-	*/
 	return pHead;
 }
 
 // Ausgabe von Liste
 
-void printList(Product *Node, int AnzahlElemente = NULL) {
+void printList(Product* Node, int AnzahlElemente = NULL) {
 	int count = 0;
 	struProduct* pTemp = Node;
 	while (pTemp->pNext != Node) {
@@ -276,7 +169,8 @@ void printList(Product *Node, int AnzahlElemente = NULL) {
 			printf(pTemp->Bez);
 			printf("\n");
 			pTemp = pTemp->pNext;
-		} else {
+		}
+		else {
 			count++;
 			if (count == AnzahlElemente + 1) {
 				break;
