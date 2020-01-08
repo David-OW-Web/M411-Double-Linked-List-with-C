@@ -20,6 +20,8 @@ Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung);
 
 void printList(Product* Node, int AnzahlElemente);
 
+void bubbleSort(Product* Node)
+
 char getRandUpperCaseChar();
 
 int getRandomNumber();
@@ -188,6 +190,24 @@ void printList(Product* Node, int AnzahlElemente = NULL) {
 }
 
 // Sortierung
+
+void bubbleSort(Product* Node) {
+	int swapped, i;
+	struProduct* pLeft = NULL;
+	struProduct* pRight = NULL;
+
+	do {
+		swapped = 0;
+		// pRight zu einem Wert zuweisen
+		while (pRight->pNext != pLeft) {
+			if (pRight->Bez > pRight->pNext->Bez) {
+				// Swap pointers and set swapped to 1
+			}
+			pRight = pRight->pNext
+		}
+		pLeft = pRight;
+	} while (swapped);
+}
 
 
 
