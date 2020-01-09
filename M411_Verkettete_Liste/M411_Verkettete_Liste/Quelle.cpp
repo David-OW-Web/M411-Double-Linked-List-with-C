@@ -20,7 +20,7 @@ Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung);
 
 void printList(Product* Node, int AnzahlElemente);
 
-void bubbleSort(Product* Node)
+Product* bubbleSort(Product* Node)
 
 char getRandUpperCaseChar();
 
@@ -70,6 +70,11 @@ void main() {
 			printf("Bezeichnung von Element eingeben: \t");
 			char Bezeichnung[40]; scanf_s("%s", Bezeichnung, sizeof(Bezeichnung)); // gets_s(Bezeichnung); // scanf("%s", &Bezeichnung);
 			deleteElement(Node, Node, Bezeichnung);
+			break;
+		case 5:
+			struProduct* sortedNode = NULL;
+			sortedNode = bubbleSort(Node);
+			printList(sortedNode, 0);
 			break;
 		case 10:
 			system("cls");
@@ -191,10 +196,12 @@ void printList(Product* Node, int AnzahlElemente = NULL) {
 
 // Sortierung
 
-void bubbleSort(Product* Node) {
+Product* bubbleSort(Product* Node) {
 	int swapped, i;
-	struProduct* pLeft = NULL;
-	struProduct* pRight = NULL;
+	struProduct* pTemp = Node;
+	// struProduct* pLeft = Node->pPrev;
+	struProduct* pLeft = Node;
+	struProduct* pRight = Node->pNext;
 
 	do {
 		swapped = 0;
@@ -202,11 +209,20 @@ void bubbleSort(Product* Node) {
 		while (pRight->pNext != pLeft) {
 			if (pRight->Bez > pRight->pNext->Bez) {
 				// Swap pointers and set swapped to 1
+				// pLeft->pNext = Node->pNext;
+				// Node->pNext = pLeft;
+				pLeft->pNext = Node->pNext;
+				Node->pNext = pLeft;
+				pRight->pNext->Bez = pLeft->pNext->Bez;
+				swapped = 1;
+				// swap();
 			}
 			pRight = pRight->pNext
 		}
 		pLeft = pRight;
+		pTemp = pTemp->pNext;
 	} while (swapped);
+	return pLeft;
 }
 
 
