@@ -72,9 +72,7 @@ void main() {
 			deleteElement(Node, Node, Bezeichnung);
 			break;
 		case 5:
-			//struProduct* sortedNode = NULL;
-			//sortedNode = bubbleSort(Node);
-			//printList(sortedNode, 0);
+			printf("BUBBLESORT");
 			Node = bubbleSort(Node);
 			break;
 		case 10:
@@ -200,21 +198,24 @@ void printList(Product* Node, int AnzahlElemente = NULL) {
 // Sortierung
 
 Product* bubbleSort(Product* Node) {
-	int swapped, i;
-	struProduct* pTemp = NULL;
+	printf("call BubbleSort");
+	int swapped;
 	// struProduct* pLeft = Node->pPrev;
 	struProduct* pLeft = Node;
 	struProduct* pRight = Node->pNext;
 
 	do {
+		printf("do");
 		swapped = 0;
 		// pRight zu einem Wert zuweisen
-		while (pRight->pNext != pLeft) {
-			if (pRight->Bez > pRight->pNext->Bez) {
+		while (pRight->pNext != Node) {
+			printf("while");
+			if (pLeft->Preis > pRight->Preis) {
+				printf("swap");
 				if(pLeft == Node) {
 					Node = pRight;
 				}
-				pTemp = pLeft->pPrev;
+				struProduct* pTemp = pLeft->pPrev;
 				// Swap pointers and set swapped to 1
 				// pLeft->pNext = Node->pNext;
 				// Node->pNext = pLeft;
@@ -227,12 +228,11 @@ Product* bubbleSort(Product* Node) {
 				swapped = 1;
 				// swap();
 			}
-			pRight = pRight->pNext
+			pLeft = pRight;
+			pRight = pLeft->pNext;
 		}
-		/*
 		pLeft = pRight;
-		pTemp = pTemp->pNext;
-		*/
+		pRight = pLeft->pNext;
 	} while (swapped);
 	return Node;
 }
