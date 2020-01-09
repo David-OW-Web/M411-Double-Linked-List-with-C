@@ -72,9 +72,10 @@ void main() {
 			deleteElement(Node, Node, Bezeichnung);
 			break;
 		case 5:
-			struProduct* sortedNode = NULL;
-			sortedNode = bubbleSort(Node);
-			printList(sortedNode, 0);
+			//struProduct* sortedNode = NULL;
+			//sortedNode = bubbleSort(Node);
+			//printList(sortedNode, 0);
+			Node = bubbleSort(Node);
 			break;
 		case 10:
 			system("cls");
@@ -164,9 +165,11 @@ Product* createList(int AnzahlElemente) {
 // Ausgabe von Liste
 
 void printList(Product* Node, int AnzahlElemente = NULL) {
+	// Count entspricht, den Anzahl an Elementen in der Liste
 	int count = 0;
 	struProduct* pTemp = Node;
 	while (pTemp->pNext != Node) {
+		// Wenn AnzahlElemente 0 entspricht, werden alle Elemente angezeigt, sonst, soviele, wie viele man angegeben hat
 		if (!AnzahlElemente) {
 			printf("\n");
 			printf("%f", pTemp->Gewicht);
@@ -198,7 +201,7 @@ void printList(Product* Node, int AnzahlElemente = NULL) {
 
 Product* bubbleSort(Product* Node) {
 	int swapped, i;
-	struProduct* pTemp = Node;
+	struProduct* pTemp = NULL;
 	// struProduct* pLeft = Node->pPrev;
 	struProduct* pLeft = Node;
 	struProduct* pRight = Node->pNext;
@@ -208,21 +211,30 @@ Product* bubbleSort(Product* Node) {
 		// pRight zu einem Wert zuweisen
 		while (pRight->pNext != pLeft) {
 			if (pRight->Bez > pRight->pNext->Bez) {
+				if(pLeft == Node) {
+					Node = pRight;
+				}
+				pTemp = pLeft->pPrev;
 				// Swap pointers and set swapped to 1
 				// pLeft->pNext = Node->pNext;
 				// Node->pNext = pLeft;
-				pLeft->pNext = Node->pNext;
-				Node->pNext = pLeft;
-				pRight->pNext->Bez = pLeft->pNext->Bez;
+				pLeft->pNext = pRight->pNext;
+				pLeft->pPrev = pRight;
+				// Node->pNext = pLeft;
+				// pRight->pNext->Bez = pLeft->pNext->Bez;
+				pRight->pNext = pLeft;
+				pRight->pPrev = pTemp;
 				swapped = 1;
 				// swap();
 			}
 			pRight = pRight->pNext
 		}
+		/*
 		pLeft = pRight;
 		pTemp = pTemp->pNext;
+		*/
 	} while (swapped);
-	return pLeft;
+	return Node;
 }
 
 
