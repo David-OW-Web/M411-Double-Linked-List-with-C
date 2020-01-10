@@ -72,7 +72,7 @@ void main() {
 		case 4:
 			printf("Bezeichnung von Element eingeben: \t");
 			char Bezeichnung[40]; scanf_s("%s", Bezeichnung, sizeof(Bezeichnung)); // gets_s(Bezeichnung); // scanf("%s", &Bezeichnung);
-			deleteElement(Node, Node, Bezeichnung);
+			Node = deleteElement(Node, Node, Bezeichnung);
 			break;
 		case 5:
 		{
@@ -154,7 +154,7 @@ Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung) {
 			pTemp = pTemp->pNext;
 		}
 	} while (pTemp->pNext != pHead);
-	return NULL;
+	return pHead;
 }
 
 Product* deleteAll(Product* pHead) {
