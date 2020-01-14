@@ -17,7 +17,7 @@ Product* createList(int AnzahlElemente);
 
 Product* deleteAll(Product* pHead);
 
-Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung);
+Product* deleteElement(Product* pHead, char* Bezeichnung);
 
 void printList(Product* Node, int AnzahlElemente);
 
@@ -29,7 +29,7 @@ int getRandomNumber();
 
 int getListLength(Product* Node);
 
-
+// Enis Hoti
 void main() {
 	int menu;
 	struProduct* Node = NULL;
@@ -37,11 +37,8 @@ void main() {
 		printf("1 - Liste erstellen\n");
 		printf("2 - Liste ausgeben\n");
 		printf("3 - Liste löschen\n");
-		// printf("4 - Prüfen ob Liste existiert\n");
 		printf("4 - Bestimmtes Element aus Liste löschen\n");
 		printf("5 - Liste sortiert ausgeben\n");
-		printf("10 - Konsole leeren\n");
-		printf("20 - Tests\n");
 		printf("0 - Programm beenden");
 		printf("\n");
 		scanf_s("%i", &menu);
@@ -51,12 +48,15 @@ void main() {
 			printf("Programm wird beendet");
 			exit(0);
 		case 1:
+			system("cls");
 			printf("Anzahl Elemente eingeben: \t");
 			int Anzahl; scanf_s("%i", &Anzahl);
 			Node = createList(Anzahl);
+			system("cls");
 			break;
 		case 2:
-			printf("Anzahl an Elementen zu ausgeben: \t\n");
+			system("cls");
+			printf("Anzahl an Elementen zu ausgeben 0 = alle: \t\n");
 			int AnzElemente; scanf_s("%i", &AnzElemente);
 			printf("Gewicht");
 			printf("\t");
@@ -70,13 +70,15 @@ void main() {
 			system("cls");
 			break;
 		case 4:
+			system("cls");
 			printf("Bezeichnung von Element eingeben: \t");
 			char Bezeichnung[40]; scanf_s("%s", Bezeichnung, sizeof(Bezeichnung)); // gets_s(Bezeichnung); // scanf("%s", &Bezeichnung);
-			Node = deleteElement(Node, Node, Bezeichnung);
+			Node = deleteElement(Node, Bezeichnung);
+			system("cls");
 			break;
 		case 5:
 		{
-			// clock_t start = clock();
+			system("cls");
 			printf("Nach was sortieren? 1 - Gewicht | 2 - Preis | 3 - Bezeichnung\n");
 			int sortAfterField; scanf_s("%i", &sortAfterField);
 			clock_t start = clock();
@@ -93,40 +95,8 @@ void main() {
 			int ListLength = getListLength(Node);
 			long float ms = end - start;
 			printf("Sortieren für Liste von Länge %i hat %lf Millisekunden gedauert\n", ListLength, ms);
-			/*
-			switch (sortAfterField) {
-			case 1:
-				bubbleSort(Node, sortAfterField);
-				break;
-			case 2:
-				bubbleSort(Node, 2);
-				break;
-			case 3:
-				bubbleSort(Node, 3);
-				break;
-			}
-			*/
-
-			/*
-			Node = bubbleSort(Node, sortAfterField);
-			clock_t end = clock();
-			int ListLength = getListLength(Node);
-			long float ms = end - start;
-			printf("Sortieren für Liste von Länge %i hat %lf Millisekunden gedauert\n", ListLength, ms);
-			*/
 			break;
 		}
-		case 10:
-			system("cls");
-			break;
-		case 20:
-			printf("String eingeben:\t");
-			printf("\n");
-			char String[10]; scanf_s("%s", String, sizeof(String));
-			printf("%s", String);
-			printf("\n");
-			printf("%i", sizeof(Node));
-			printf("\n");
 		}
 	} while (menu != 0);
 
@@ -136,7 +106,9 @@ void main() {
 
 // Löschfunktionen
 
-Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung) {
+
+// David Peric
+Product* deleteElement(Product* pHead, char* Bezeichnung) {
 	struProduct* pTemp = pHead->pPrev;
 	do {
 		if (strcmp(pTemp->Bez, Bezeichnung) == 0) {
@@ -144,21 +116,23 @@ Product* deleteElement(Product* pHead, Product* pDel, char* Bezeichnung) {
 			struProduct* aTemp = pTemp->pNext;
 			bTemp->pNext = pTemp->pNext;
 			aTemp->pPrev = pTemp->pPrev;
+			// erstes Element in Liste
 			if (pTemp == pHead) {
 				pHead = aTemp;
 			}
+			// Speicherblock befreien
 			free(pTemp);
 			pTemp = aTemp;
 		}
 		else {
 			pTemp = pTemp->pNext;
 		}
-	} while (pTemp->pNext != pHead);
+	} while (pTemp != pHead->pPrev);
 	return pHead;
 }
 
+// Enis Hoti
 Product* deleteAll(Product* pHead) {
-	// tmp entspricht der Node
 	while (pHead->pPrev != pHead) {
 		struProduct* pTemp = pHead->pPrev;
 		pHead->pPrev = pTemp->pPrev;
@@ -171,49 +145,52 @@ Product* deleteAll(Product* pHead) {
 
 // Erstellen der Liste
 
+// David Peric
 Product* createList(int AnzahlElemente) {
-	// struProduct* pHead = NULL; Pointers für Erstellung von Liste definieren und Speicher reservieren
-	struProduct* pHead = (struProduct*)malloc(sizeof(struProduct));
+	// Pointers für Erstellung von Liste definieren und Speicher reservieren
+	struProduct* pHead = NULL;
 	struProduct* pLast = NULL;
 	struProduct* pNew = NULL;
 	for (int i = 0; i < AnzahlElemente; i++) {
-		if (i == 0) {
-			pHead->Bez[0] = getRandUpperCaseChar();
-			pHead->Bez[1] = '\0';
-			pHead->Preis = getRandomNumber(); // rand() % 100;
-			pHead->Gewicht = getRandomNumber();
-			pHead->pNext = pHead;
-			pHead->pPrev = pHead;
-		}
-		pLast = pHead->pPrev;
-		// Speicher reservieren
-		pNew = (struProduct*)malloc(sizeof(struProduct));
-		// pHead = pHead->pNext;
-		pHead->pPrev = pNew;
-		pLast->pNext = pNew;
-		pNew->pPrev = pLast;
-		pNew->pNext = pHead;
-		pNew->Gewicht = getRandomNumber();
+		struProduct* pNew = (struProduct*)malloc(sizeof(struProduct));
 		pNew->Bez[0] = getRandUpperCaseChar();
 		pNew->Bez[1] = '\0';
-		pNew->Preis = getRandomNumber();
+		pNew->Preis = getRandomNumber(); // rand() % 100;
+		pNew->Gewicht = getRandomNumber();
+
+		if (i == 0) {
+			// erstes Element
+			pHead = pNew;
+			pNew->pNext = pNew;
+			pNew->pPrev = pNew;
+		}
+		else {
+			pNew->pNext = pHead;
+			pHead->pPrev->pNext = pNew;
+			pNew->pPrev = pHead->pPrev;
+			pHead->pPrev = pNew;
+		}
 	}
 	return pHead;
+
 }
 
 // Ausgabe von Liste
 
+// David Peric
 void printList(Product* Node, int AnzahlElemente = NULL) {
 	// Count entspricht, den Anzahl an Elementen in der Liste
 	int count = 0;
 	struProduct* pTemp = Node;
-	while (pTemp->pNext != Node) {
+	do {
 		// Wenn AnzahlElemente 0 entspricht, werden alle Elemente angezeigt, sonst, soviele, wie viele man angegeben hat
 		if (!AnzahlElemente) {
 			printf("\n");
 			printf("%f", pTemp->Gewicht);
+			printf(" KG");
 			printf("\t");
 			printf("%f", pTemp->Preis);
+			printf(" CHF");
 			printf("\t");
 			printf(pTemp->Bez);
 			printf("\n");
@@ -226,21 +203,23 @@ void printList(Product* Node, int AnzahlElemente = NULL) {
 			}
 			printf("\n");
 			printf("%f", pTemp->Gewicht);
+			printf(" KG");
 			printf("\t");
 			printf("%f", pTemp->Preis);
+			printf(" CHF");
 			printf("\t");
 			printf(pTemp->Bez);
 			printf("\n");
 			pTemp = pTemp->pNext;
 		}
-	}
+	} while (pTemp != Node);
 }
 
 // Sortierung
 
+// David Peric
 Product* bubbleSort(Product* Node, int SortProperty) {
-	int swapped;
-	// struProduct* pLeft = Node->pPrev;
+	int swapped; // Variable zum Prüfen ob Pointer getauscht
 	struProduct* pLeft = Node;
 	struProduct* pRight = Node->pNext;
 
@@ -248,26 +227,22 @@ Product* bubbleSort(Product* Node, int SortProperty) {
 
 	do {
 		swapped = 0;
-		// pRight zu einem Wert zuweisen
 		while (pLeft->pNext != Node) {
 			if (pLeft->Preis > pRight->Preis) {
 				if (pLeft == Node) {
 					Node = pRight;
 				}
 				struProduct* pTemp = pLeft->pPrev;
-				// Swap pointers and set swapped to 1
-				// pLeft->pNext = Node->pNext;
-				// Node->pNext = pLeft;
+				// Pointer tauschen
 				pLeft->pNext = pRight->pNext;
 				pLeft->pPrev = pRight;
 				pLeft->pNext->pPrev = pLeft;
-				// Node->pNext = pLeft;
-				// pRight->pNext->Bez = pLeft->pNext->Bez;
+
 				pRight->pNext = pLeft;
 				pRight->pPrev = pTemp;
 				pTemp->pNext = pRight;
+				// swapped auf 1 setzen
 				swapped = 1;
-				// swap();
 			}
 			pLeft = pRight;
 			pRight = pLeft->pNext;
@@ -278,26 +253,21 @@ Product* bubbleSort(Product* Node, int SortProperty) {
 	if (SortProperty == 1) {
 		do {
 			swapped = 0;
-			// pRight zu einem Wert zuweisen
 			while (pLeft->pNext != Node) {
 				if (pLeft->Gewicht > pRight->Gewicht) {
 					if (pLeft == Node) {
 						Node = pRight;
 					}
 					struProduct* pTemp = pLeft->pPrev;
-					// Swap pointers and set swapped to 1
-					// pLeft->pNext = Node->pNext;
-					// Node->pNext = pLeft;
+
 					pLeft->pNext = pRight->pNext;
 					pLeft->pPrev = pRight;
 					pLeft->pNext->pPrev = pLeft;
-					// Node->pNext = pLeft;
-					// pRight->pNext->Bez = pLeft->pNext->Bez;
+
 					pRight->pNext = pLeft;
 					pRight->pPrev = pTemp;
 					pTemp->pNext = pRight;
 					swapped = 1;
-					// swap();
 				}
 				pLeft = pRight;
 				pRight = pLeft->pNext;
@@ -309,26 +279,21 @@ Product* bubbleSort(Product* Node, int SortProperty) {
 	else if (SortProperty == 2) {
 		do {
 			swapped = 0;
-			// pRight zu einem Wert zuweisen
 			while (pLeft->pNext != Node) {
 				if (pLeft->Preis > pRight->Preis) {
 					if (pLeft == Node) {
 						Node = pRight;
 					}
 					struProduct* pTemp = pLeft->pPrev;
-					// Swap pointers and set swapped to 1
-					// pLeft->pNext = Node->pNext;
-					// Node->pNext = pLeft;
+
 					pLeft->pNext = pRight->pNext;
 					pLeft->pPrev = pRight;
 					pLeft->pNext->pPrev = pLeft;
-					// Node->pNext = pLeft;
-					// pRight->pNext->Bez = pLeft->pNext->Bez;
+
 					pRight->pNext = pLeft;
 					pRight->pPrev = pTemp;
 					pTemp->pNext = pRight;
 					swapped = 1;
-					// swap();
 				}
 				pLeft = pRight;
 				pRight = pLeft->pNext;
@@ -340,26 +305,21 @@ Product* bubbleSort(Product* Node, int SortProperty) {
 	else if (SortProperty == 3) {
 		do {
 			swapped = 0;
-			// pRight zu einem Wert zuweisen
 			while (pLeft->pNext != Node) {
 				if (strlen(pLeft->Bez) > strlen(pRight->Bez)) {
 					if (pLeft == Node) {
 						Node = pRight;
 					}
 					struProduct* pTemp = pLeft->pPrev;
-					// Swap pointers and set swapped to 1
-					// pLeft->pNext = Node->pNext;
-					// Node->pNext = pLeft;
+
 					pLeft->pNext = pRight->pNext;
 					pLeft->pPrev = pRight;
 					pLeft->pNext->pPrev = pLeft;
-					// Node->pNext = pLeft;
-					// pRight->pNext->Bez = pLeft->pNext->Bez;
+
 					pRight->pNext = pLeft;
 					pRight->pPrev = pTemp;
 					pTemp->pNext = pRight;
 					swapped = 1;
-					// swap();
 				}
 				pLeft = pRight;
 				pRight = pLeft->pNext;
@@ -375,19 +335,24 @@ Product* bubbleSort(Product* Node, int SortProperty) {
 
 // Zufallsgeneratoren
 
+// Enis Hoti
 char getRandUpperCaseChar() {
-	/* Return a random of the 26 chars after the value of 65 in ASCII. */
+	// Gibt zufälligen Grossbuchstaben von den Buchstaben nach dem Wert 65 in ASCII
 	return (char)(rand() % 26 + 65);
 }
 
+// Enis Hoti
 int getRandomNumber() {
+	// Gibt zufällige Zahl zwischen 0 und 100 zurück
 	return rand() % 100;
 }
 
 // Sonstige funktionen
 
+// Enis Hoti
 int getListLength(Product* Node) {
-	int count = 0;
+	// Gibt die Länge der Liste zurück
+	int count = 1;
 	struProduct* pTemp = Node;
 	while (pTemp->pNext != Node) {
 		pTemp = pTemp->pNext;
